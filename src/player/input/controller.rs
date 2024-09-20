@@ -16,11 +16,6 @@ pub struct PlayerInput {
     pub running: bool,
     pub escape: bool,
 
-    pub start_dialogue: bool,
-    pub dialogue_confirm: bool,
-    pub dialogue_continue: bool,
-    pub dialogue_direction: i8,
-
     pub toggle_fullscreen: bool,
     pub toggle_debug: bool,
 }
@@ -113,34 +108,7 @@ fn input_running(keys: Res<ButtonInput<KeyCode>>, mut player_input: ResMut<Playe
 
 fn input_escape(keys: Res<ButtonInput<KeyCode>>, mut player_input: ResMut<PlayerInput>) {
     player_input.escape = keys.just_pressed(KeyCode::Escape);
-}
-
-fn input_dialogue(
-    keys: Res<ButtonInput<KeyCode>>,
-    mouse_buttons: Res<ButtonInput<MouseButton>>,
-    mut player_input: ResMut<PlayerInput>,
-) {
-    let mut direction = 0;
-
-    if keys.just_pressed(KeyCode::KeyJ)
-        || keys.just_pressed(KeyCode::KeyS)
-        || keys.just_pressed(KeyCode::ArrowDown)
-    {
-        direction -= 1;
-    }
-    if keys.just_pressed(KeyCode::KeyK)
-        || keys.just_pressed(KeyCode::KeyW)
-        || keys.just_pressed(KeyCode::ArrowUp)
-    {
-        direction += 1;
-    }
-    player_input.dialogue_direction = direction;
-
-    player_input.start_dialogue = keys.just_pressed(KeyCode::KeyE);
-    player_input.dialogue_confirm = keys.just_pressed(KeyCode::Enter);
-
-    player_input.dialogue_continue =
-        keys.just_pressed(KeyCode::Space) || mouse_buttons.just_pressed(MouseButton::Left);
+:qa
 }
 
 fn toggle_fullscreen(keys: Res<ButtonInput<KeyCode>>, mut player_input: ResMut<PlayerInput>) {
@@ -164,7 +132,6 @@ impl Plugin for InputControllerPlugin {
                 player_movement,
                 input_running,
                 input_escape,
-                input_dialogue,
                 toggle_fullscreen,
                 toggle_debug,
             )
